@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { ProductController } from "../controllers/product.controller";
+import asyncHandler from "express-async-handler";
+import productController from "../controllers/product.controller";
 
-const productRouter: Router = Router();
-const productController = new ProductController();
+const router: Router = Router();
 
-productRouter.get("/", productController.getProducts);
-productRouter.post("/", productController.createProduct);
+router.get("/", asyncHandler(productController.getProducts));
+router.post("/", asyncHandler(productController.createProduct));
 
-export default productRouter;
+export default router;

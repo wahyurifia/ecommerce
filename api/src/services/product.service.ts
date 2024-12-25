@@ -1,26 +1,28 @@
-import { ProductRepository } from "../repositories/product.repository";
+import productRepository from "../repositories/product.repository";
 
-const productRepository = new ProductRepository();
+const findProducts = async () => {
+  const response = await productRepository.getProducts();
+  return response;
+};
 
-export class ProductService {
-  async findProducts() {
-    const response = await productRepository.getProducts();
-    return response;
-  }
-  async createProduct(
-    name: string,
-    image: string,
-    description: string,
-    price: number,
-    stock: number
-  ) {
-    const response = await productRepository.createProducts(
-      name,
-      image,
-      description,
-      price,
-      stock
-    );
-    return response;
-  }
-}
+const addProduct = async (
+  name: string,
+  image: string,
+  description: string,
+  price: number,
+  stock: number
+) => {
+  const response = await productRepository.createProducts(
+    name,
+    image,
+    description,
+    price,
+    stock
+  );
+  return response;
+};
+
+export default {
+  findProducts,
+  addProduct,
+};

@@ -13,42 +13,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product {
-  id String @unique @default(uuid())
-  name String
-  image String
-  description String
-  rating Int @default(0)
-  numReview Int @default(0)
-  price Int
-  stock Int
-  reviews Review[]
+model User {
+  id       String   @id @unique @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  isAdmin  Boolean  @default(false)
+  orders   Order[]
+  review   Review[]
 
-  isShow Boolean @default(true)
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+
+  @@map("user")
+}
+
+model Product {
+  id          String   @id @unique @default(uuid())
+  name        String
+  image       String
+  description String
+  like        Int      @default(0)
+  numReview   Int      @default(0)
+  price       Int
+  stock       Int
+  reviews     Review[]
+
+  isShow   Boolean  @default(true)
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  order    Order[]  @relation("OrderProducts")
+
   @@map("product")
 }
 
-model Review {
-  id String @unique @default(uuid())
-  name String
-  rating Int
-  comment String
+model Order {
+  id            String @id @default(cuid())
+  orderId       String @unique
+  userId        String
+  shipping      Json
+  paymentMethod String @default("Paypal")
+  paymentResult Json
+  taxPrice      Int    @default(0)
+  shippingPrice Int    @default(0)
+  totalPrice    Int    @default(0)
 
-  productId String
-  product Product @relation(fields: [productId], references: [id])
-  createAt DateTime @default(now())
-  @@map("review")
+  isPad    Boolean   @default(false)
+  createAt DateTime  @default(now())
+  product  Product[] @relation("OrderProducts")
+  user     User      @relation(fields: [userId], references: [id])
+
+  @@map("order")
 }
 
-model User {
-  id String @unique @default(uuid())
-  name String
-  email String @unique
-  password String
-  isAdmin Boolean @default(false)
-  
-  createAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+model Review {
+  id      String @id @unique @default(uuid())
+  like    Int
+  comment String
+
+  userId    String
+  productId String
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createAt  DateTime @default(now())
+
+  @@map("review")
 }

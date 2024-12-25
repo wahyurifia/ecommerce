@@ -1,5 +1,10 @@
 import { Router } from "express";
+import asyncHandler from "express-async-handler";
+import userController from "../controllers/user.controller";
 
-const userRouter: Router = Router();
+const router: Router = Router();
 
-export default userRouter;
+router.get("/", asyncHandler(userController.getUsers));
+router.post("/", asyncHandler(userController.createUser));
+
+export default router;

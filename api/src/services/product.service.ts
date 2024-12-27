@@ -1,8 +1,14 @@
-import productRepository from "../repositories/product.repository";
+import prisma from "../prisma/prismaClient";
 
 const findProducts = async () => {
-  const response = await productRepository.getProducts();
-  return response;
+  return await prisma.product.findMany({
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      description: true
+    }
+  })
 };
 
 const addProduct = async (
@@ -12,14 +18,10 @@ const addProduct = async (
   price: number,
   stock: number
 ) => {
-  const response = await productRepository.createProducts(
-    name,
-    image,
-    description,
-    price,
-    stock
-  );
-  return response;
+  return await prisma.product.create({
+    data: { name, image, description, price, stock },
+  });
+
 };
 
 export default {

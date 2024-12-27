@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import cors from "cors";
 import productRouter from "./src/routes/product.routes";
 import userRouter from "./src/routes/user.routes";
-import authRouter from "./src/routes/auth.routes";
 
 const app: Application = express();
 dotenv.config();
@@ -15,7 +14,6 @@ app.use(express.json());
 // Routes
 app.use("/api/product", productRouter);
 app.use("/api/user", userRouter);
-app.use("/api/auth", authRouter);
 
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
   console.log("Welcome my server ecommerce by wahyu");

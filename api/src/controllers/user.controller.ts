@@ -10,25 +10,25 @@ const getUsers = async (req: Request, res: Response, next: NextFunction) => {
       response,
     });
   } catch (error: any) {
-    next(error);
+    res.send(error.message)
   }
 };
 
-const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  const { name, email, password } = req.body;
+const getUserById = async (req: Request, res: Response, next: NextFunction) => {
+  const userId: string = req.params.id
   try {
-    const response = await userService.addUser(name, email, password);
-
-    res.status(201).send({
-      message: "Success create user",
+    const response = await userService.findUserById(userId)
+    res.status(200).send({
+      message: "Success get one user",
       response,
-    });
+    })
   } catch (error: any) {
-    next(error);
+    res.send(error.message)
   }
-};
+}
+
 
 export default {
   getUsers,
-  createUser,
+  getUserById
 };

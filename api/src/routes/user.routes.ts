@@ -1,10 +1,12 @@
 import { Router } from "express";
-import asyncHandler from "express-async-handler";
 import userController from "../controllers/user.controller";
+import authController from "../controllers/auth.controller";
 
 const router: Router = Router();
+router.post("/login", authController.login)
+router.post("/register", authController.register)
 
-router.get("/", asyncHandler(userController.getUsers));
-router.post("/", asyncHandler(userController.createUser));
+router.get("/", userController.getUsers);
+router.get("/:id", userController.getUserById)
 
 export default router;

@@ -14,6 +14,23 @@ const getProducts = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getProductById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const productId = req.params.id;
+  try {
+    const response = await productService.findProductById(productId);
+
+    res.status(200).json({
+      response,
+    });
+  } catch (error: any) {
+    res.json(error.message);
+  }
+};
+
 const createProduct = async (
   req: Request,
   res: Response,
@@ -38,4 +55,4 @@ const createProduct = async (
   }
 };
 
-export default { getProducts, createProduct };
+export default { getProducts, createProduct, getProductById };
